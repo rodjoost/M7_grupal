@@ -40,3 +40,30 @@ class PedidoForm(forms.ModelForm):
         form_fields = ['nombre', 'cantidad']
         for field in form_fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+class UserRegistrationForm(UserCreationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control"}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"class":"form-control"}))
+    password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput(attrs={"class":"form-control"}))
+    password2 = forms.CharField(label="Confirmacion contraseña", widget=forms.PasswordInput(attrs={"class":"form-control"}))
+    date = forms.DateField(widget=forms.DateInput(attrs={"class":"form-control"}))
+    group = forms.ModelChoiceField(queryset=Group.objects.all())
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+        help_texts = {k:"" for k in fields}
+
+class LoginForm(forms.Form):
+    nombre   = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs['class'] = 'form-control'
+        self.fields['password'].widget.attrs['class'] = 'form-control'
+

@@ -1,0 +1,19 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+<h1>Registro nuevo colaborador</h1><br><br>
+{% if messages %}
+    {% for message in messages %}
+    <div class="{{ message.tags }}">{{ message|capfirst}}</div>
+    {% endfor %}
+{% endif %}
+
+<form action="" method="post">
+
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class='btn btn-dark'>Registrarse</button>
+
+</form>
+
+{% endblock  %}

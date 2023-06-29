@@ -21,8 +21,7 @@ class Producto(models.Model):
 
 class Pedido(models.Model):
     nombre = models.CharField(max_length=100)
-    cantidad = models.IntegerField()
-
+    cantidad = models.IntegerField()  
 
 
 

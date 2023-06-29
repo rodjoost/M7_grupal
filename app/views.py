@@ -6,6 +6,8 @@ from .forms import UserRegistrationForm, ProductoForm,ProveedorForm,PedidoForm
 from .models import Producto,Proveedor,Pedido
 from django.contrib import messages
 
+
+
 # Create your views here.
 
 def welcome(request):
@@ -65,11 +67,11 @@ def pedido(request):
             pedido.save()
         else:
             print("Datos invalidos")
-        return redirect('/pedido')
+        return redirect('/vistapedidos')
     context = {'form': form}
 
     return render(request, 'pedido.html', context=context)
-
+@login_required
 def register_user(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
@@ -89,3 +91,6 @@ def register_user(request):
     return render(request, 'register_user.html', context)
 
     
+def pedido_list(request):
+    pedidos = Pedido.objects.all()
+    return render(request, 'vista_pedido.html', {'pedidos':pedidos})

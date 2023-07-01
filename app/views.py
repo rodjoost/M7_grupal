@@ -24,7 +24,7 @@ def proveedor(request):
             proveedor.rut=form.cleaned_data['rut']
             proveedor.nombre=form.cleaned_data['nombre']
             proveedor.razon_social=form.cleaned_data['razon_social']
-            proveedor.save()
+            form.save()
         else:
             print("Datos invalidos")
         return redirect('/proveedor')
@@ -38,39 +38,38 @@ def producto(request):
     if request.method == "POST":
         form = ProductoForm(request.POST)
         if form.is_valid():
-            print(form)
-            producto = Producto()
-            producto.sku = form.cleaned_data['sku']
-            producto.nombre = form.cleaned_data['nombre']
-            producto.cantidad = form.cleaned_data['cantidad']
-            producto.categoria = form.cleaned_data['categoria']
-            producto.fabricante = form.cleaned_data['fabricante']
-            producto.precio = form.cleaned_data['precio']
-            producto.save()
-        else:
-            print("Datos invalidos")
-        return redirect('/producto')
+            form.save()
+            return redirect('/producto')
     context = {'form': form}
-
     return render(request, 'producto.html', context=context)
 
 @login_required
 def pedido(request):
+   
     form = PedidoForm()
+
     if request.method == "POST":
         form = PedidoForm(request.POST)
+ 
         if form.is_valid():
-            print(form)
+
             pedido = Pedido()
             pedido.nombre = form.cleaned_data['nombre']
+            print(pedido.nombre)
+
             pedido.cantidad = form.cleaned_data['cantidad']
-            pedido.save()
+            print(pedido.cantidad)
+
+            form.save()
+            
         else:
             print("Datos invalidos")
         return redirect('/vistapedidos')
     context = {'form': form}
 
     return render(request, 'pedido.html', context=context)
+
+
 @login_required
 def register_user(request):
     if request.method == "POST":

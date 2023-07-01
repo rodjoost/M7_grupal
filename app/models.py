@@ -20,8 +20,16 @@ class Producto(models.Model):
 
 
 class Pedido(models.Model):
+    ESTADO_CHOICES = [
+        ('P', 'Pendiente'),
+        ('EP', 'En Preparacion'),
+        ('ED', 'En Despacho'),
+        ('E', 'Entregado'),
+    ]
     nombre = models.CharField(max_length=100)
-    cantidad = models.IntegerField()  
+    cantidad = models.IntegerField()
+    estado = models.CharField(max_length=2, choices=ESTADO_CHOICES, default='P')
+
 
 
 

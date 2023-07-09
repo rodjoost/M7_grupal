@@ -18,6 +18,8 @@
           <td>{{ pedido.nombre }}</td>
           <td>{{ pedido.cantidad }}</td>
           <td>{{ pedido.get_estado_display }}</td>
+          <td><a href="{% url 'eliminar_pedido' pedido.id %}"><input type='submit' value='Eliminar'/></a></td>
+          <td><a href="{% url 'modificar_pedido' pedido.id %}">{{pedido.title}}<input type='submit' value='Modificar'/></a></td>
         </tr>
       {% empty %}
         <tr>
@@ -27,5 +29,7 @@
     </tbody>
   </table>
 </div>
+
+
 
 {% endblock %}

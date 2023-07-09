@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Proveedor(models.Model):
@@ -29,10 +30,9 @@ class Pedido(models.Model):
     nombre = models.CharField(max_length=100)
     cantidad = models.IntegerField()
     estado = models.CharField(max_length=2, choices=ESTADO_CHOICES, default='P')
-
-
-
-
+    cancelado = models.BooleanField(default=False)
+    def __str__(self):
+        return self.nombre
 
 
 

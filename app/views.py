@@ -1,10 +1,12 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import UserRegistrationForm, ProductoForm,ProveedorForm,PedidoForm
-from .models import Producto,Proveedor,Pedido
+from .forms import UserRegistrationForm, ProductoForm, ProveedorForm, PedidoForm
+from .models import Producto, Proveedor, Pedido
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 
 
 
@@ -13,17 +15,18 @@ from django.contrib import messages
 def welcome(request):
     return render(request, "home.html")
 
+
 @login_required
 def proveedor(request):
     form = ProveedorForm()
     if request.method == 'POST':
-        form=ProveedorForm(request.POST)
+        form = ProveedorForm(request.POST)
         if form.is_valid():
-            print (form)
-            proveedor=Proveedor()
-            proveedor.rut=form.cleaned_data['rut']
-            proveedor.nombre=form.cleaned_data['nombre']
-            proveedor.razon_social=form.cleaned_data['razon_social']
+            print(form)
+            proveedor = Proveedor()
+            proveedor.rut = form.cleaned_data['rut']
+            proveedor.nombre = form.cleaned_data['nombre']
+            proveedor.razon_social = form.cleaned_data['razon_social']
             form.save()
         else:
             print("Datos invalidos")
@@ -31,6 +34,7 @@ def proveedor(request):
     context = {'form': form}
 
     return render(request, 'proveedor.html', context=context)
+
 
 @login_required
 def producto(request):
@@ -42,6 +46,7 @@ def producto(request):
             return redirect('/producto')
     context = {'form': form}
     return render(request, 'producto.html', context=context)
+
 
 @login_required
 def pedido(request):
@@ -93,3 +98,26 @@ def register_user(request):
 def pedido_list(request):
     pedidos = Pedido.objects.all()
     return render(request, 'vista_pedido.html', {'pedidos':pedidos})
+
+
+
+def eliminar_pedido(request, id):
+    pedidos = Pedido.objects.get(pk=id)
+    if pedidos.estado=="P":
+         if request.method == "POST":
+             pedidos.delete()
+             return redirect('vistapedidos')
+    else:
+        return HttpResponse("No puedes eliminar pedidos que no estén pendientes.")
+    return render(request, 'eliminar_pedido.html', {'pedidos': pedidos})
+
+
+def modificar_pedido(request, id):
+    pedido = Pedido.objects.get(pk=id)
+    form = PedidoForm(instance=pedido)
+    if request.method =="POST":
+        form = PedidoForm(request.POST, instance=pedido)
+        form.save()
+        return redirect('vistapedidos')
+    else:
+        return render(request, 'modificar_pedido.html', {'form':form})

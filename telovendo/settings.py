@@ -50,6 +50,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+#configuracion de las sesiones
+SESSION_COOKIE_AGE = 3600
+SESSION_COOKIE_DOMAIN = "localhost" 
+SESSION_COOKIE_SECURE = False 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True 
+SESSION_SAVE_EVERY_REQUEST = False 
+
+#---------------------------------------
 
 ROOT_URLCONF = 'telovendo.urls'
 
@@ -133,3 +141,4 @@ LOGIN_REDIRECT_URL = 'home'
 
 REGISTER_USER_REDIRECT_URL = 'home'
 
+AUTH_USER_MODEL = 'app.CustomUser'
